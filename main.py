@@ -1,13 +1,21 @@
-from config import bot, dp
+from config import bot, dp, Admins
 from aiogram import executor, types
 import logging
-from handlers import commands, quiz, store
+from handlers import commands, quiz, store, echo
 
+async def on_startup(_):
+    for i in Admins:
+        await bot.send_message(chat_id=i, text='бот активирован!')
 
+async def on_shutdown(_):
+    for i in Admins:
+        await bot.send_message(chat_id=i, text="бот выключен")
 commands.register_commands(dp)
 quiz.register_handler_quiz(dp)
 store.reg_handler_fsm_registration(dp)
+echo.register_echo_handler(dp)
+
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    executor.start_polling(dp, skip_updates=True, allowed_updates=['callback'])
+    executor.start_polling(dp, skip_updates=True, allowed_updates=['callback'], on_startup=on_startup, on_shutdown=on_shutdown)
