@@ -49,7 +49,7 @@ async def load_category(message: types.Message, state: FSMContext):
 
 async def load_photo(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
-        data['photo'] = message.photo[-1].file_id
+        data['product_photo'] = message.photo[-1].file_id
     await store.next()
     await message.answer('введите колекцию товара:', reply_markup=cancel)
 async def load_collection(message: types.Message, state: FSMContext):
@@ -67,7 +67,7 @@ async def load_productid(message: types.Message, state : FSMContext):
     async with state.proxy() as data:
         data['productid'] = message.text
 
-    await message.answer_photo(photo=data['photo'], caption=f"имя товара - {data['product_name']}\n"
+    await message.answer_photo(photo=data['product_photo'], caption=f"имя товара - {data['product_name']}\n"
                                                             f"размер товра - {data['size']}\n"
                                                             f"цена товара - {data['price']}\n"
                                                             f"категория товара - {data['category']}\n"
