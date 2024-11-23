@@ -31,7 +31,14 @@ def get_db_connection():
     connect.row_factory = sqlite3.Row
     return connect
 
-
+def fetch_all_products():
+    conn = get_db_connection()
+    products = conn.execute("""
+        SELECT * FROM collection_products s
+        INNER JOIN product_details sd ON s.productid = sd.productid
+        """).fetchall()
+    conn.close()
+    return products
 
 
 def delete_product(product_id):

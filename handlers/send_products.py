@@ -10,6 +10,7 @@ async def start_send_products(message: types.Message):
     await message.answer('Выберите как отправить товары:', reply_markup=keyboard)
 async def send_all_products(callback_query: types.CallbackQuery):
     products = db_main.fetch_all_products()
+    print(products)
     if products:
         for product in products:
             caption = (f"Заполненный товар: \n"
